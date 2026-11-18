@@ -11,21 +11,11 @@ import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * High-performance signal processing and Fourier Analysis Engine.
- *
- * <p>Core Architectural Principles:
- * <ul>
- *   <li><b>100% Direct Off-Heap Memory:</b> All continuous numeric signal buffers (samples, coefficients,
- *       and range bounding trees) are allocated off-heap using native {@link ByteBuffer#allocateDirect}.
- *       This eliminates GC overhead, prevents memory fragmentation, and maximizes hardware cache locality.</li>
- *   <li><b>Analytical Dirac Delta Impulses:</b> Singular impulses (e.g., from Dirac delta functions) are
- *       isolated, integrated, and analytically added into the Fourier series coefficients to avoid numerical
- *       ringing or infinite sample poisoning.</li>
- *   <li><b>Segment Tree Accelerated Level-of-Detail (LOD):</b> A direct off-heap segment tree enables
- *       O(log N) min/max bounding queries over arbitrary time intervals for 60fps graph rendering.</li>
- *   <li><b>Scale-Invariant Multiscale Anti-Aliasing:</b> Sums Fourier harmonics with smooth Fej??r / cosine
- *       attenuation beyond the pixel Nyquist frequency, preventing Moir?? beating and resize flickering.</li>
- * </ul>
+ * signal processing and Fourier Analysis Engine.
+ *     - 100% Direct Off-Heap Memory. 
+ *     - Analytical Dirac Delta Impulses: Singular impulses (e.g., from Dirac delta functions) are isolated, integrated, and analytically added into the Fourier series coefficients.
+ *     - Segment Tree Accelerated Level-of-Detail (LOD).
+ *     - Scale-Invariant Multiscale Anti-Aliasing.
  */
 public class SignalEngine {
 
