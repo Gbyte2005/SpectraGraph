@@ -7,17 +7,6 @@ import java.nio.DoubleBuffer;
 
 /**
  * High-performance 2D Marching Squares contour generator for implicit curves F(x, y) = 0.
- *
- * <p>Key Architecture Highlights:
- * <ul>
- *   <li><b>Zero-Allocation Off-Heap Grid:</b> Utilizes a thread-local direct {@link DoubleBuffer}
- *       allocated outside the Java garbage-collected heap. This completely eliminates GC churn
- *       and memory spikes during continuous 60fps graph panning and zooming.</li>
- *   <li><b>Topological Disambiguation:</b> Resolves ambiguous saddle cases (configurations 5 and 10)
- *       by evaluating the central sub-pixel sample F(midX, midY) to prevent topological disconnects.</li>
- *   <li><b>Linear Interpolation:</b> Computes exact fractional edge crossings along cell boundaries
- *       to produce continuous, smooth vector paths without jagged staircasing.</li>
- * </ul>
  */
 public final class MathMarchingSquares {
 
