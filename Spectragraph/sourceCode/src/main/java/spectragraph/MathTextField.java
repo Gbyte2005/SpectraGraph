@@ -47,13 +47,8 @@ import com.spectragraph.superscript.AbsoluteValueSuperScript;
 /**
  * Text field component for interactive mathematical formulas.
  *
- * <p>
- * <b>Performance:</b> The rendered math content (without caret) is cached to a
- * {@link BufferedImage}. When the field is repainted due to external causes
- * (calculator drag, window drag, parent repaint, etc.), the cached image is
- * blitted
- * in O(1) instead of traversing and re-drawing the entire recursive math
- * layout.
+ * Performance: The rendered math content (without caret) is cached to a {@link BufferedImage}. When the field is repainted due to external causes,
+ * (calculator drag, window drag, parent repaint, etc.), the cached image is blitted, in O(1) instead of traversing and re-drawing the entire recursive math layout.
  * The caret is drawn on top separately.
  */
 public class MathTextField extends JTextField {
