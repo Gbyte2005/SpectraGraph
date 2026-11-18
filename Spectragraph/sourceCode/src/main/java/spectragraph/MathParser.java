@@ -5,19 +5,11 @@ import com.spectragraph.superscript.AbsoluteValueSuperScript;
 import org.apache.commons.numbers.complex.Complex;
 
 /**
- * High-performance mathematical expression parsing and evaluation engine for SpectraGraph.
- *
- * <p>Key Capabilities:
- * <ul>
- *   <li><b>Real and Complex Arithmetic:</b> Native evaluation of real scalars and complex numbers
- *       (via Apache Commons Numbers {@link Complex}).</li>
- *   <li><b>Calculus and Differential Operators:</b> Dynamic numerical and symbolic evaluation of
- *       derivatives (d/dx, d/dy, partials ∂/∂x), multidimensional definite integrals (∫), and sums (∑).</li>
- *   <li><b>Signal Processing Primitives:</b> Standard signals including rect, tri, sinc, step, saw,
- *       and Dirac delta impulses (δ).</li>
- *   <li><b>Safe Numerical Guards:</b> Protects against division by zero, fractional powers of negative bases,
- *       domain overflow, and recursive evaluation stack depth limits.</li>
- * </ul>
+ * Key Capabilities:
+ *   - Real and Complex Arithmetic: Native evaluation of real scalars and complex numbers (via Apache Commons Numbers {@link Complex}).
+ *   - Calculus and Differential Operators: Dynamic numerical and symbolic evaluation of derivatives (d/dx, d/dy, partials ∂/∂x), multidimensional definite integrals (∫), and sums (∑).
+ *   - Signal Processing Primitives: Standard signals including rect, tri, sinc, step, saw, trapz, for the trapezoidal wave, and Dirac delta impulses (δ).
+ *   - Safe Numerical Guards: Protects against division by zero, fractional powers of negative bases, domain overflow, and recursive evaluation stack depth limits.
  */
 public class MathParser {
 
@@ -365,54 +357,76 @@ public class MathParser {
 
     private static final java.util.regex.Pattern COMPLEX_NORM_PATTERN =
             java.util.regex.Pattern.compile("(?<![a-zA-Z0-9_\\.\\(\\]])(-?\\d+(?:\\.\\d+)?)\\s*([+\\-])\\s*((?:\\d+(?:\\.\\d+)?\\s*)?[ij](?:\\^(?:\\([^)]+\\)|\\{[^}]+\\}|[0-9a-zA-Z]+))?)(?![a-zA-Z0-9_])");
+    
     private static final java.util.regex.Pattern SPACE_IJ_PATTERN =
             java.util.regex.Pattern.compile("(?<=\\d)\\s+([ij])\\b");
+    
     private static final java.util.regex.Pattern SUB_PAREN_PATTERN =
             java.util.regex.Pattern.compile("([a-zA-Z]+)_\\(([a-zA-Z0-9]+)\\)");
+    
     private static final java.util.regex.Pattern SUB_BRACE_PATTERN =
             java.util.regex.Pattern.compile("([a-zA-Z]+)_\\{([a-zA-Z0-9]+)\\}");
+    
     private static final java.util.regex.Pattern SUB_BRACKET_PATTERN =
             java.util.regex.Pattern.compile("([a-zA-Z]+)_\\[([a-zA-Z0-9]+)\\]");
+    
     // Complex conjugate notation: y*[n] → conj(y_n), h*[k] → conj(h_k), etc.
     // Matches letter(s) followed by * and then [subscript] — the * denotes conjugate, not multiplication.
     private static final java.util.regex.Pattern CONJ_BRACKET_PATTERN =
             java.util.regex.Pattern.compile("([a-zA-Z]+)\\*\\[([a-zA-Z0-9]+)\\]");
+    
     // Discrete signal subscript without underscore: x[n] → x_n, h[k] → h_k, etc.
     // Only matches single-letter variable names to avoid collisions with functions like sin[...], log[...].
     // Negative lookbehind excludes ∑, ∫, √ and similar operators that use [] for limits/indices,
     // as well as preceding letters (to avoid matching e.g. the 'g' in 'log[e]').
     private static final java.util.regex.Pattern SIGNAL_BRACKET_PATTERN =
             java.util.regex.Pattern.compile("(?<![a-zA-Z∑∫√\\u221A\\u222B\\u2211\\u03A3_])([a-zA-Z])\\[([a-zA-Z][a-zA-Z0-9]*)\\]");
+    
     private static final java.util.regex.Pattern FRAC_D_ORDER_PATTERN =
             java.util.regex.Pattern.compile("(?i)\\\\frac\\s*\\{\\s*d(?:\\^\\{?(\\d+)\\}?)?\\s*\\}\\s*\\{\\s*d(?:\\^\\{?(\\d+)\\}?\\s*([a-zA-Z])|([a-zA-Z])(?:\\^\\{?(\\d+)\\}?)?)\\s*\\}");
+    
     private static final java.util.regex.Pattern FRAC_D_SIMPLE_PATTERN =
             java.util.regex.Pattern.compile("(?i)\\\\frac\\s*\\{\\s*d\\s*\\}\\s*\\{\\s*d([a-zA-Z])\\s*\\}");
     private static final java.util.regex.Pattern FRAC_PARTIAL_PATTERN =
             java.util.regex.Pattern.compile("(?i)\\\\frac\\s*\\{\\s*\\\\partial\\s*\\}\\s*\\{\\s*\\\\partial([a-zA-Z])\\s*\\}");
+    
     private static final java.util.regex.Pattern PARTIAL_SLASH_PATTERN =
             java.util.regex.Pattern.compile("(?i)\\\\partial/\\\\partial\\s*([a-zA-Z])");
+    
     private static final java.util.regex.Pattern PARTIAL_UNICODE_SLASH_PATTERN =
             java.util.regex.Pattern.compile("(?i)∂/∂\\s*([a-zA-Z])");
+    
     private static final java.util.regex.Pattern PAREN_D_SLASH_PATTERN =
             java.util.regex.Pattern.compile("(?i)\\(\\s*d/d([a-zA-Z])\\s*\\)");
+    
     private static final java.util.regex.Pattern M_FRAC_NORM_PATTERN =
             java.util.regex.Pattern.compile("(?i)\\(\\s*([d\u2202]|\\\\partial)(?:\\s*\\^\\s*(?:\\(?\\d+\\)?|\\{\\d+\\}))?\\s*\\)\\s*/\\s*\\(\\s*([d\u2202]|\\\\partial)(?:\\s*\\^\\s*(?:\\(?\\d+\\)?|\\{\\d+\\}))?\\s*([a-zA-Z])(?:\\s*\\^\\s*(?:\\(?\\d+\\)?|\\{\\d+\\}))?\\s*\\)");
+    
     private static final java.util.regex.Pattern DIFF_VAR_PAREN_PATTERN =
             java.util.regex.Pattern.compile("(?i)\\bdiff([a-zA-Z])\\s*\\(");
+    
     private static final java.util.regex.Pattern DIFF_N_VAR_PAREN_PATTERN =
             java.util.regex.Pattern.compile("(?i)\\bdiff(\\d+)([a-zA-Z])\\s*\\(");
+    
     private static final java.util.regex.Pattern DIFF_PAREN_PATTERN =
             java.util.regex.Pattern.compile("(?i)\\bdiff\\s*\\(");
+    
     private static final java.util.regex.Pattern DIFF_WORD_PATTERN =
             java.util.regex.Pattern.compile("(?i)\\bdiff\\b");
+    
+    
     private static final java.util.regex.Pattern D_SLASH_D_PATTERN =
             java.util.regex.Pattern.compile("(?i)\\bd/d([a-zA-Z])\\b");
+    
     private static final java.util.regex.Pattern PAREN_D_SLASH_D_PATTERN =
             java.util.regex.Pattern.compile("(?i)\\(\\s*d\\s*\\)\\s*/\\s*\\(\\s*d([a-zA-Z])\\s*\\)");
+    
     private static final java.util.regex.Pattern PATTERN_FUNC_FLOOR =
             java.util.regex.Pattern.compile("(?i)\\bfloor\\s*\\(");
+    
     private static final java.util.regex.Pattern PATTERN_FUNC_CEIL =
             java.util.regex.Pattern.compile("(?i)\\bceil\\s*\\(");
+    
     private static final java.util.regex.Pattern PATTERN_FUNC_ABS =
             java.util.regex.Pattern.compile("(?i)\\babs\\s*\\(");
 
